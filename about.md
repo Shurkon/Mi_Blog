@@ -4,7 +4,7 @@ title: About
 ---
 
 
-  > 👋 **Hola, soy Marcos Scurtu** (*aka* **Shurkon**)  
+  > # 👋 **Hola, soy Marcos Scurtu** (*aka* **Shurkon**)  
 
 
   > 🔥 Apasionado por la **administración de sistemas** y la **ciberseguridad**, con un enfoque especial en el área de **Pentesting**.  
