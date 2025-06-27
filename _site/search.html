@@ -1,119 +1,56 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="generator" content="Jekyll">
-  <title>search | Mi Blog Personal</title>
+---
+layout: default
+title: search
+permalink: /search/
+---
 
-  <link rel="stylesheet" href="/css/main.css">
-  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+<h2>🔍 Buscar artículos</h2>
+<input type="text" id="search-box" placeholder="Escribe para buscar..." 
+  style="width:100%; padding:10px; margin:20px 0; font-size:1rem; background-color:#bcbcbc; border:1px solid #000000; border-radius:15px;" />
 
-  <!-- SEO -->
-  <meta name="author" content="Marcos Scurtu" />
-  <meta property="og:title" content="search" />
-  <meta property="og:locale" content="en_US" />
-  <link rel="canonical" href="http://0.0.0.0:8000/search" />
-  <meta property="og:url" content="http://0.0.0.0:8000/search" />
-  <meta property="og:site_name" content="Mi Blog Personal" />
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebPage",
-      "url": "http://0.0.0.0:8000/search",
-      "headline": "search",
-      "author": {
-        "@type": "Person",
-        "name": "Marcos Scurtu"
-      }
-    }
-  </script>
+<ul id="search-results"></ul>
 
-  <!-- Lunr.js -->
-  <script src="https://unpkg.com/lunr/lunr.js"></script>
-</head>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script>
+  let idx = null;
+  let posts = [];
 
-<body>
-  <div id="wrapper">
-    <header>
-      <div>
-        <a href="/">
-          <h1>marcos@home:~$</h1>
-        </a>
-        <div class="header-links">
-          <a href="/archive"><h2 class="header-link">$ls</h2></a>
-          <a href="/about"><h2 class="header-link">$whoami</h2></a>
-          <a href="/contact"><h2 class="header-link">$id</h2></a>
-          <a href="/search"><h2 class="header-link">$locate</h2></a>
-        </div>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <article>
-          <h2 id="-buscar-artículos">🔍 Buscar artículos</h2>
-          <p>
-            <input type="text" id="search-box" placeholder="Escribe para buscar..." 
-              style="width:100%; padding:10px; margin:20px 0; font-size:1rem; background-color:#bcbcbc; border:1px solid #000000; border-radius:15px;" />
-          </p>
-          <ul id="search-results"></ul>
-        </article>
-      </section>
-    </div>
-  </div>
-
-  <footer>
-    <a href="https://creativecommons.org/licenses/by-nc/3.0/deed.en_US">
-      <span><b>Marcos Scurtu</b></span>
-      <span>© 2025</span>
-    </a>
-  </footer>
-
-  <!-- Script de búsqueda -->
-  <script>
-    let idx = null;
-    let posts = [];
-
-    fetch("/search.json")
-      .then(response => {
-        if (!response.ok) throw new Error("No se pudo cargar search.json");
-        return response.json();
-      })
-      .then(data => {
-        posts = data;
-        idx = lunr(function () {
-          this.ref("url");
-          this.field("title", { boost: 10 });
-          this.field("content");
-          posts.forEach(doc => this.add(doc));
-        });
-      })
-      .catch(err => {
-        console.error("Error cargando el índice de búsqueda:", err);
+  fetch("/search.json")
+    .then(response => {
+      if (!response.ok) throw new Error("No se pudo cargar search.json");
+      return response.json();
+    })
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
       });
+    })
+    .catch(err => console.error("Error al cargar el índice de búsqueda:", err));
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const input = document.getElementById("search-box");
-      const resultList = document.getElementById("search-results");
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("search-box");
+    const resultList = document.getElementById("search-results");
 
-      input.addEventListener("input", function () {
-        const query = this.value.trim();
-        resultList.innerHTML = "";
+    input.addEventListener("input", function () {
+      const query = this.value.trim();
+      resultList.innerHTML = "";
 
-        if (!idx || query.length < 2) return;
+      if (!idx || query.length < 2) return;
 
-        const results = idx.search(query);
-        results.forEach(result => {
-          const post = posts.find(p => p.url === result.ref);
-          if (post) {
-            const li = document.createElement("li");
-            li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
-            resultList.appendChild(li);
-          }
-        });
+      const results = idx.search(query);
+      results.forEach(result => {
+        const post = posts.find(p => p.url === result.ref);
+        if (post) {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+          resultList.appendChild(li);
+        }
       });
     });
-  </script>
-</body>
-</html> 
+  });
+</script>
+ 
