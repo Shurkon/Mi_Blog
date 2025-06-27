@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+
+  <title>contact</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>contact | Mi Blog Personal</title>
+<meta name="generator" content="Jekyll v3.5.2" />
+<meta property="og:title" content="contact" />
+<meta name="author" content="Marcos Scurtu" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:8000/contact" />
+<meta property="og:url" content="http://0.0.0.0:8000/contact" />
+<meta property="og:site_name" content="Mi Blog Personal" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Marcos Scurtu"},"@type":"WebPage","url":"http://0.0.0.0:8000/contact","headline":"contact","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<head>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+  let idx = null;
+  let posts = [];
+
+  fetch("/search.json")
+    .then(response => response.json())
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });  // Boost en título
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
+      });
+    });
+
+  document.getElementById("search-box").addEventListener("input", function () {
+    if (!idx) return;
+
+    const query = this.value.trim();
+    const resultList = document.getElementById("search-results");
+    resultList.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const results = idx.search(query);
+    results.forEach(result => {
+      const post = posts.find(p => p.url === result.ref);
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+      resultList.appendChild(li);
+    });
+  });
+</script>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>marcos@home:~$</h1>
+    </a>
+    <div class="header-links">
+      <a href="/archive"><h2 class="header-link">$ls</h2></a>
+<a href="/about"><h2 class="header-link">$whoami</h2></a>
+<a href="/contact"><h2 class="header-link">$id</h2></a>
+<a href="/search"><h2 class="header-link">$locate</h2></a>
+
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        <article>
+  <h2 id="-mis-redes">🌐 Mis Redes</h2>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;">
+
+<a href="https://github.com/shurkon" target="_blank" style="text-decoration: none; color: inherit;">
+  <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem 2rem; text-align: center; width: 200px;">
+    <h2 style="margin: 0;">🐙 GitHub</h2>
+    <p style="margin: 0; font-size: 0.9rem;">github.com/shurkon</p>
+  </div>
+</a>
+
+<a href="https://www.reddit.com/user/Shurk0n" target="_blank" style="text-decoration: none; color: inherit;">
+  <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem 2rem; text-align: center; width: 200px;">
+    <h2 style="margin: 0;">👽 Reddit</h2>
+    <p style="margin: 0; font-size: 0.9rem;">u/Shurk0n</p>
+  </div>
+</a>
+
+</div>
+
+
+</article>
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="https://creativecommons.org/licenses/by-nc/3.0/deed.en_US">
+    <span>
+        <b>Marcos Scurtu</b>
+    </span>
+    
+    <span>© 2025</span>
+  </a>
+</footer>
+
+  
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+
+  <title>Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo) | Mi Blog Personal</title>
+<meta name="generator" content="Jekyll v3.5.2" />
+<meta property="og:title" content="Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)" />
+<meta name="author" content="Marcos Scurtu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="🌐 Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)" />
+<meta property="og:description" content="🌐 Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)" />
+<link rel="canonical" href="http://0.0.0.0:8000/Por-qu%C3%A9-decid%C3%AD-abrir-este-blog-(y-por-qu%C3%A9-t%C3%BA-tambi%C3%A9n-deber%C3%ADas-considerar-hacerlo)" />
+<meta property="og:url" content="http://0.0.0.0:8000/Por-qu%C3%A9-decid%C3%AD-abrir-este-blog-(y-por-qu%C3%A9-t%C3%BA-tambi%C3%A9n-deber%C3%ADas-considerar-hacerlo)" />
+<meta property="og:site_name" content="Mi Blog Personal" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-06-27T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"🌐 Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)","author":{"@type":"Person","name":"Marcos Scurtu"},"@type":"BlogPosting","url":"http://0.0.0.0:8000/Por-qu%C3%A9-decid%C3%AD-abrir-este-blog-(y-por-qu%C3%A9-t%C3%BA-tambi%C3%A9n-deber%C3%ADas-considerar-hacerlo)","headline":"Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)","dateModified":"2025-06-27T00:00:00-05:00","datePublished":"2025-06-27T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:8000/Por-qu%C3%A9-decid%C3%AD-abrir-este-blog-(y-por-qu%C3%A9-t%C3%BA-tambi%C3%A9n-deber%C3%ADas-considerar-hacerlo)"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<head>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+  let idx = null;
+  let posts = [];
+
+  fetch("/search.json")
+    .then(response => response.json())
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });  // Boost en título
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
+      });
+    });
+
+  document.getElementById("search-box").addEventListener("input", function () {
+    if (!idx) return;
+
+    const query = this.value.trim();
+    const resultList = document.getElementById("search-results");
+    resultList.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const results = idx.search(query);
+    results.forEach(result => {
+      const post = posts.find(p => p.url === result.ref);
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+      resultList.appendChild(li);
+    });
+  });
+</script>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>marcos@home:~$</h1>
+    </a>
+    <div class="header-links">
+      <a href="/archive"><h2 class="header-link">$ls</h2></a>
+<a href="/about"><h2 class="header-link">$whoami</h2></a>
+<a href="/contact"><h2 class="header-link">$id</h2></a>
+<a href="/search"><h2 class="header-link">$locate</h2></a>
+
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        <article>
+  <h2>Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)</h2>
+  <time datetime="2025-06-27T00:00:00-05:00" class="by-line">27 Jun 2025</time>
+  <h1 id="-por-qué-decidí-abrir-este-blog-y-por-qué-tú-también-deberías-considerar-hacerlo">🌐 Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)</h1>
+
+<p>¡Buenos días! ☀️ Hoy quiero compartir contigo las razones que me llevaron a crear este blog… y por qué quizás te animes a hacer lo mismo.</p>
+
+<hr />
+<ul>
+  <li>
+    <h3 id="-un-poco-de-contexto">🧠 Un poco de contexto</h3>
+
+    <p>Era mi último día de prácticas. Viernes por la tarde, el ambiente estaba tranquilo y no había mucho movimiento. Sin tareas pendientes, me aburría en mi puesto. Así que saqué el portátil, abrí mi aplicación de notas y comencé a estudiar.<br />
+Pasados unos 30 o 40 minutos, decidí hacer una pausa. En ese momento me picó la curiosidad: ¿cuántas notas había escrito hasta ahora?</p>
+
+    <p>📄 <strong>¡400 notas!</strong><br />
+Quizás para los más frikis del mundo de la toma de apuntes no parezca mucho. A fin de cuentas, con una o dos notas por día, es una cifra alcanzable en unos meses.</p>
+
+    <p>Sin embargo, al ver ese número pensé: aunque muchas de ellas no sean dignas de publicación (ya sea por mi redacción o por el contenido trivial), <em>seguro que entre tanto apunte hay algo de valor escondido</em> 💎.</p>
+  </li>
+</ul>
+
+<hr />
+<ul>
+  <li>
+    <h3 id="-dudas-razonables">🤔 Dudas razonables</h3>
+
+    <p>Como es normal, al principio me asaltaron muchas preguntas:</p>
+  </li>
+  <li>¿No soy demasiado novato como para compartir contenido técnico?</li>
+  <li>¿Debería escribir bajo mi nombre real o mantener el anonimato?</li>
+  <li>
+    <p>¿Y si me equivoco y publico algo incorrecto?</p>
+
+    <p>Estuve reflexionando largo rato… hasta que llegué a una conclusión clara: <strong>sí, voy a abrir mi propio blog</strong>.<br />
+Después de todo, incluso los grandes referentes de la industria empezaron desde cero, con ideas imperfectas y recursos limitados.</p>
+  </li>
+</ul>
+
+<hr />
+<ul>
+  <li>
+    <h3 id="-así-empezó-todo">🚀 Así empezó todo</h3>
+
+    <p>Con el día terminando y la motivación por las nubes, me puse a investigar lo básico sobre <strong>GitHub Pages</strong>. Encontré una plantilla, la adapté a mis necesidades y… nació mi página.</p>
+
+    <p>Aunque en ese momento no tuviera contenido, me fui a dormir con una sonrisa. Sentí que había tenido una gran idea.<br />
+Pero… ¿por qué me pareció tan buena?</p>
+  </li>
+</ul>
+
+<hr />
+<ul>
+  <li>
+    <h3 id="-los-beneficios-de-tener-un-blog-personal">💡 Los beneficios de tener un blog personal</h3>
+
+    <p>Tener tu propio espacio donde compartir apuntes y reflexiones puede traerte muchos beneficios:</p>
+  </li>
+  <li>📚 <strong>Tus notas no se pierden</strong><br />
+A menos que las compartas, tus notas corren el riesgo de acabar olvidadas en una carpeta polvorienta del disco duro. Como esa caja de CDs viejos que prometes revisar algún día… pero no tienes ni lector ni ganas.</li>
+  <li>⚙️ <strong>Publicar es más fácil de lo que crees</strong><br />
+Si ya tienes tus apuntes en Markdown, subirlos a una web es pan comido. Mejorarlos visualmente, corregir errores o agregar algo de estilo te lleva solo unos minutos.</li>
+  <li>🌍 <strong>Contribuir y darte a conocer</strong><br />
+Ya sea para mostrar tus conocimientos a reclutadores o simplemente para devolver algo a la comunidad, tu blog es una excelente carta de presentación.</li>
+  <li>💬 <strong>Recibir feedback y mejorar</strong><br />
+Si eres principiante (como yo), habrá personas dispuestas a ayudarte y darte consejos. El miedo a equivocarte es normal, pero recuerda algo:
+    <blockquote>
+      <h2 id="todos-somos-humanos-equivocarse-no-solo-es-inevitable-también-es-parte-esencial-del-aprendizaje">Todos somos humanos. Equivocarse no solo es inevitable, también es parte esencial del aprendizaje.</h2>
+    </blockquote>
+  </li>
+</ul>
+
+</article>
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="https://creativecommons.org/licenses/by-nc/3.0/deed.en_US">
+    <span>
+        <b>Marcos Scurtu</b>
+    </span>
+    
+    <span>© 2025</span>
+  </a>
+</footer>
+
+  
+</body>
+
+</html>

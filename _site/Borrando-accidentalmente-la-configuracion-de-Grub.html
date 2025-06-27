@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+
+  <title>Borrando Accidentalmente La Configuracion De Grub</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Borrando Accidentalmente La Configuracion De Grub | Mi Blog Personal</title>
+<meta name="generator" content="Jekyll v3.5.2" />
+<meta property="og:title" content="Borrando Accidentalmente La Configuracion De Grub" />
+<meta name="author" content="Marcos Scurtu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="🔧 Recuperando GRUB2 tras borrar grub.cfg (a propósito)" />
+<meta property="og:description" content="🔧 Recuperando GRUB2 tras borrar grub.cfg (a propósito)" />
+<link rel="canonical" href="http://0.0.0.0:8000/Borrando-accidentalmente-la-configuracion-de-Grub" />
+<meta property="og:url" content="http://0.0.0.0:8000/Borrando-accidentalmente-la-configuracion-de-Grub" />
+<meta property="og:site_name" content="Mi Blog Personal" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-06-27T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"🔧 Recuperando GRUB2 tras borrar grub.cfg (a propósito)","author":{"@type":"Person","name":"Marcos Scurtu"},"@type":"BlogPosting","url":"http://0.0.0.0:8000/Borrando-accidentalmente-la-configuracion-de-Grub","headline":"Borrando Accidentalmente La Configuracion De Grub","dateModified":"2025-06-27T00:00:00-05:00","datePublished":"2025-06-27T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:8000/Borrando-accidentalmente-la-configuracion-de-Grub"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<head>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+  let idx = null;
+  let posts = [];
+
+  fetch("/search.json")
+    .then(response => response.json())
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });  // Boost en título
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
+      });
+    });
+
+  document.getElementById("search-box").addEventListener("input", function () {
+    if (!idx) return;
+
+    const query = this.value.trim();
+    const resultList = document.getElementById("search-results");
+    resultList.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const results = idx.search(query);
+    results.forEach(result => {
+      const post = posts.find(p => p.url === result.ref);
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+      resultList.appendChild(li);
+    });
+  });
+</script>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>marcos@home:~$</h1>
+    </a>
+    <div class="header-links">
+      <a href="/archive"><h2 class="header-link">$ls</h2></a>
+<a href="/about"><h2 class="header-link">$whoami</h2></a>
+<a href="/contact"><h2 class="header-link">$id</h2></a>
+<a href="/search"><h2 class="header-link">$locate</h2></a>
+
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        <article>
+  <h2>Borrando Accidentalmente La Configuracion De Grub</h2>
+  <time datetime="2025-06-27T00:00:00-05:00" class="by-line">27 Jun 2025</time>
+  <h1 id="-recuperando-grub2-tras-borrar-grubcfg-a-propósito">🔧 Recuperando GRUB2 tras borrar <code class="highlighter-rouge">grub.cfg</code> (a propósito)</h1>
+
+<hr />
+
+<p>En esta práctica nos vamos a meter en un pequeño “lío controlado”: vamos a <strong>“borrar accidentalmente”</strong> el archivo <code class="highlighter-rouge">grub.cfg</code>, lo que nos impedirá arrancar el sistema de forma automática. Pero no te preocupes, lo haremos manualmente desde la terminal de GRUB y lo recuperaremos en unos segundos 🛠️.</p>
+
+<hr />
+
+<h2 id="-algunas-consideraciones-previas-del-grubcfg">💥 Algunas consideraciones previas del <code class="highlighter-rouge">grub.cfg</code></h2>
+
+<ul>
+  <li><code class="highlighter-rouge">grub.cfg</code> es el <strong>archivo de configuración principal</strong> de GRUB2.</li>
+  <li>⚠️ <strong>No debería editarse directamente.</strong> En su lugar, debemos modificar <code class="highlighter-rouge">/etc/default/grub</code> y luego regenerar el archivo.</li>
+  <li>Este archivo contiene las entradas del sistema, con sus respectivas directivas <code class="highlighter-rouge">menuentry</code> y sus opciones.</li>
+  <li>Si falta, <strong>GRUB no puede iniciar el sistema automáticamente</strong>. Tendremos que arrancarlo <strong>manualmente desde la terminal de GRUB</strong>.</li>
+</ul>
+
+<hr />
+
+<h2 id="-a-la-acción">🚀 ¡A la acción!</h2>
+<p>Borramos <code class="highlighter-rouge">grub.cfg</code> y reiniciamos el sistema. Llegamos a la terminal de GRUB. Aquí empieza lo interesante…</p>
+
+<hr />
+
+<h2 id="-teoría-para-recuperar-grub2">📘 Teoría para recuperar GRUB2</h2>
+
+<ol>
+  <li>🔍 Localizar la <strong>partición raíz</strong> del sistema.</li>
+  <li>🧩 Identificar dos archivos clave:
+    <ul>
+      <li><code class="highlighter-rouge">vmlinuz</code> (el kernel)</li>
+      <li><code class="highlighter-rouge">initrd</code> o <code class="highlighter-rouge">initramfs</code> (imagen del disco RAM inicial)</li>
+    </ul>
+  </li>
+  <li>💡 Puedes revisar conceptos en: <em>[dmesg, vmlinuz y initramfs: Mensajes del arranque del sistema]</em></li>
+</ol>
+
+<hr />
+
+<h2 id="-práctica-paso-a-paso">🧪 Práctica paso a paso</h2>
+
+<h3 id="1--localizar-la-partición-raíz">1. 🔍 Localizar la partición raíz</h3>
+
+<p>Para identificarla:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ls <span class="o">(</span>hd0,msdos1<span class="o">)</span>/
+</code></pre>
+</div>
+
+<blockquote>
+  <p>(la barra final <code class="highlighter-rouge">/</code> es importante para listar el contenido)</p>
+</blockquote>
+
+<p>Una vez localizada, la establecemos como partición raíz:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">set </span><span class="nv">root</span><span class="o">=(</span>hd0,msdos1<span class="o">)</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="2--cargar-el-kernel">2. 🧠 Cargar el kernel</h3>
+
+<p>Puede estar en <code class="highlighter-rouge">/boot</code>, pero en muchos casos está directamente en la raíz:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>linux /vmlinuz <span class="nv">root</span><span class="o">=</span>/dev/sda1
+</code></pre>
+</div>
+
+<blockquote>
+  <p>Asegúrate de conocer el nombre del dispositivo en Linux (<code class="highlighter-rouge">/dev/sda1</code>, por ejemplo).</p>
+</blockquote>
+
+<hr />
+
+<h3 id="3--cargar-el-initrd-o-initramfs">3. 🧵 Cargar el <code class="highlighter-rouge">initrd</code> o <code class="highlighter-rouge">initramfs</code></h3>
+
+<p>Suele estar en el mismo directorio que el kernel:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>initrd /initrd.img
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="4--arrancar-el-sistema">4. 🎬 Arrancar el sistema</h3>
+
+<p>Cuando todo esté listo:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>boot
+</code></pre>
+</div>
+
+<p>¡Y cruza los dedos para que lo hayas hecho todo bien! De lo contrario, tendrás que hacerlo todo otra vez. 🤞</p>
+
+<hr />
+
+<h2 id="-tras-iniciar-el-sistema">🔄 Tras iniciar el sistema</h2>
+
+<p>Una vez el sistema haya arrancado, es <strong>fundamental regenerar <code class="highlighter-rouge">grub.cfg</code></strong> para que GRUB vuelva a funcionar de forma automática.</p>
+
+<p>En sistemas basados en Debian (como Ubuntu), el comando habitual es:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>update-grub
+</code></pre>
+</div>
+
+<p>📌 Revisa el manual de tu distro si usas otra.</p>
+
+</article>
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="https://creativecommons.org/licenses/by-nc/3.0/deed.en_US">
+    <span>
+        <b>Marcos Scurtu</b>
+    </span>
+    
+    <span>© 2025</span>
+  </a>
+</footer>
+
+  
+</body>
+
+</html>

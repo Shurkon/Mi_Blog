@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+
+  <title>Mi Blog Personal</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Mi Blog Personal</title>
+<meta name="generator" content="Jekyll v3.5.2" />
+<meta property="og:title" content="Mi Blog Personal" />
+<meta name="author" content="Marcos Scurtu" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:8000/" />
+<meta property="og:url" content="http://0.0.0.0:8000/" />
+<meta property="og:site_name" content="Mi Blog Personal" />
+<script type="application/ld+json">
+{"name":"Mi Blog Personal","author":{"@type":"Person","name":"Marcos Scurtu"},"@type":"WebSite","url":"http://0.0.0.0:8000/","headline":"Mi Blog Personal","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<head>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+  let idx = null;
+  let posts = [];
+
+  fetch("/search.json")
+    .then(response => response.json())
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });  // Boost en título
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
+      });
+    });
+
+  document.getElementById("search-box").addEventListener("input", function () {
+    if (!idx) return;
+
+    const query = this.value.trim();
+    const resultList = document.getElementById("search-results");
+    resultList.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const results = idx.search(query);
+    results.forEach(result => {
+      const post = posts.find(p => p.url === result.ref);
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+      resultList.appendChild(li);
+    });
+  });
+</script>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>marcos@home:~$</h1>
+    </a>
+    <div class="header-links">
+      <a href="/archive"><h2 class="header-link">$ls</h2></a>
+<a href="/about"><h2 class="header-link">$whoami</h2></a>
+<a href="/contact"><h2 class="header-link">$id</h2></a>
+<a href="/search"><h2 class="header-link">$locate</h2></a>
+
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        <ul>
+    
+      <li>
+          <h2><a href="/Por-qu%C3%A9-decid%C3%AD-abrir-este-blog-(y-por-qu%C3%A9-t%C3%BA-tambi%C3%A9n-deber%C3%ADas-considerar-hacerlo)">Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo)</a></h2>
+          <time datetime="2025-06-27T00:00:00-05:00">27 Jun 2025</time>
+          <p>🌐 Por qué decidí abrir este blog (y por qué tú también deberías considerar hacerlo) ¡Buenos días! ☀️ Hoy quiero compartir contigo las razones que me llevaron a crear este blog… y por qué quizás te animes a hacer lo mismo. 🧠 Un poco de contexto Era mi último día...</p>
+      </li>
+    
+      <li>
+          <h2><a href="/Borrando-accidentalmente-la-configuracion-de-Grub">Borrando Accidentalmente La Configuracion De Grub</a></h2>
+          <time datetime="2025-06-27T00:00:00-05:00">27 Jun 2025</time>
+          <p>🔧 Recuperando GRUB2 tras borrar grub.cfg (a propósito) En esta práctica nos vamos a meter en un pequeño “lío controlado”: vamos a “borrar accidentalmente” el archivo grub.cfg, lo que nos impedirá arrancar el sistema de forma automática. Pero no te preocupes, lo haremos manualmente desde la terminal de GRUB y...</p>
+      </li>
+    
+</ul>
+
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="https://creativecommons.org/licenses/by-nc/3.0/deed.en_US">
+    <span>
+        <b>Marcos Scurtu</b>
+    </span>
+    
+    <span>© 2025</span>
+  </a>
+</footer>
+
+  
+</body>
+
+</html>

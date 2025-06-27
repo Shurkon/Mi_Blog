@@ -2,6 +2,47 @@
 <html>
 {% include head.html %}
 
+<head>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+  let idx = null;
+  let posts = [];
+
+  fetch("/search.json")
+    .then(response => response.json())
+    .then(data => {
+      posts = data;
+      idx = lunr(function () {
+        this.ref("url");
+        this.field("title", { boost: 10 });  // Boost en título
+        this.field("content");
+        posts.forEach(doc => this.add(doc));
+      });
+    });
+
+  document.getElementById("search-box").addEventListener("input", function () {
+    if (!idx) return;
+
+    const query = this.value.trim();
+    const resultList = document.getElementById("search-results");
+    resultList.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const results = idx.search(query);
+    results.forEach(result => {
+      const post = posts.find(p => p.url === result.ref);
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
+      resultList.appendChild(li);
+    });
+  });
+</script>
+
+</head>
+
 <body>
   <div id="wrapper">
     {% include header.html %}
