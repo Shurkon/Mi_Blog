@@ -14,7 +14,7 @@ title: search
   let idx = null;
   let posts = [];
 
-  fetch("/search.json")
+  fetch("{{ '/search.json' | relative_url }}")
     .then(response => response.json())
     .then(data => {
       posts = data;
