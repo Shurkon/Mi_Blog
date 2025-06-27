@@ -1,83 +1,21 @@
 <!DOCTYPE html>
-<html>
-{% include head.html %}
+<html lang="es">
+  {% include head.html %}  <!-- Aquí debe estar el SEO -->
 
-<head>
-
-<script src="https://unpkg.com/lunr/lunr.js"></script>
-
-<script>
-  let idx = null;
-  let posts = [];
-
-  fetch("/search.json")
-    .then(response => response.json())
-    .then(data => {
-      posts = data;
-      idx = lunr(function () {
-        this.ref("url");
-        this.field("title", { boost: 10 });  // Boost en título
-        this.field("content");
-        posts.forEach(doc => this.add(doc));
-      });
-    });
-
-  document.getElementById("search-box").addEventListener("input", function () {
-    if (!idx) return;
-
-    const query = this.value.trim();
-    const resultList = document.getElementById("search-results");
-    resultList.innerHTML = "";
-
-    if (query.length < 2) return;
-
-    const results = idx.search(query);
-    results.forEach(result => {
-      const post = posts.find(p => p.url === result.ref);
-      const li = document.createElement("li");
-      li.innerHTML = `<a href="${post.url}">${post.title}</a>`;
-      resultList.appendChild(li);
-    });
-  });
-</script>
-
-</head>
-
-<body>
-  <div id="wrapper">
-    {% include header.html %}
-    <div class="container">
-      <section id="main_content">
-        {{ content }}
-      </section>
+  <body>
+    <div id="wrapper">
+      {% include header.html %}
+      <div class="container">
+        <section id="main_content">
+          {{ content }}
+        </section>
+      </div>
     </div>
-  </div>
 
-  {% if paginator.total_pages > 1 %}
-  <div class="pagination">
-    {% if paginator.previous_page == 1 %}
-    <a href="{{ '/' | prepend: site.baseurl | replace: '//', '/' }}" class="page-item">&laquo;</a>
-    {% elsif paginator.previous_page%}
-    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="page-item">&laquo;</a>
-    {% else %}
-    <span class="page-item">&laquo;</span>
-    {% endif %} {% for page in (1..paginator.total_pages) %} {% if page == paginator.page %}
-    <span class="page-item">{{ page }}</span>
-    {% elsif page == 1 %}
-    <a href="{{ '/' | prepend: site.baseurl | replace: '//', '/' }}" class="page-item">{{ page }}</a>
-    {% else %}
-    <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}" class="page-item">{{ page }}</a>
-    {% endif %} {% endfor %} {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="page-item">&raquo;</a>
-    {% else %}
-    <span class="page-item">&raquo;</span>
+    {% include footer.html %}
+
+    {% if site.google_analytics %}
+      {% include analytics.html %}
     {% endif %}
-  </div>
-  {% endif %} {% include footer.html %}
-
-  {% if site.google_analytics %}
-    {% include analytics.html %}
-  {% endif %}
-</body>
-
+  </body>
 </html>
